@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const { body, param, query, validationResult } = require('express-validator');
 const swaggerJsDoc = require('swagger-jsdoc');
@@ -7,6 +8,7 @@ const swaggerUi = require('swagger-ui-express');
 // Web Server
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 // DB
 mongoose.connect('mongodb://localhost:27017/db').then(() => console.log('Connected to DB')).catch(err => console.error(err));
