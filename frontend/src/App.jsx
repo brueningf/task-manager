@@ -1,63 +1,7 @@
 import { useState, useEffect, useContext, createContext } from 'react';
 import apiClient from './api';
 
-export const TaskContext = createContext();
-
-export const TaskProvider = ({ children }) => {
-  const [tasks, setTasks] = useState([]);
-  const [filter, setFilter] = useState('all');
-
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const response = await apiClient.get('/api/tasks');
-        setTasks(response.data);
-      } catch (error) {
-        console.error('Error fetching tasks', error);
-      }
-    };
-
-    fetchTasks();
-  }, []);
-
-  const addTask = async (task) => {
-    try {
-      const response = await apiClient.post('/api/tasks', task);
-      setTasks((prev) => [...prev, response.data]);
-    } catch (error) {
-      console.error('Error adding task', error);
-    }
-  };
-
-  const updateTask = async (id, updates) => {
-    try {
-      const response = await apiClient.put(`/api/tasks/${id}`, updates);
-      setTasks((prev) => prev.map((task) => (task._id === id ? response.data : task)));
-    } catch (error) {
-      console.error('Error updating task', error);
-    }
-  };
-
-  const deleteTask = async (id) => {
-    try {
-      await apiClient.delete(`/api/tasks/${id}`);
-      setTasks((prev) => prev.filter((task) => task._id !== id));
-    } catch (error) {
-      console.error('Error deleting task', error);
-    }
-  };
-
-  const value = {
-    tasks,
-    filter,
-    setFilter,
-    addTask,
-    updateTask,
-    deleteTask,
-  };
-
-  return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;
-};
+const TaskContext = createContext(null);
 
 export const useTaskContext = () => useContext(TaskContext);
 
@@ -156,10 +100,60 @@ const TaskForm = () => {
 };
 
 const App = () => {
-  const { setFilter } = useTaskContext();
-  
+  const [tasks, setTasks] = useState([]);
+  const [filter, setFilter] = useState('all');
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await apiClient.get('/tasks');
+        setTasks(response.data);
+      } catch (error) {
+        console.error('Error fetching tasks', error);
+      }
+    };
+
+    fetchTasks();
+  }, []);
+
+  const addTask = async (task) => {
+    try {
+      const response = await apiClient.post('/tasks', task);
+      setTasks((prev) => [...prev, response.data]);
+    } catch (error) {
+      console.error('Error adding task', error);
+    }
+  };
+
+  const updateTask = async (id, updates) => {
+    try {
+      const response = await apiClient.put(`/tasks/${id}`, updates);
+      setTasks((prev) => prev.map((task) => (task._id === id ? response.data : task)));
+    } catch (error) {
+      console.error('Error updating task', error);
+    }
+  };
+
+  const deleteTask = async (id) => {
+    try {
+      await apiClient.delete(`/tasks/${id}`);
+      setTasks((prev) => prev.filter((task) => task._id !== id));
+    } catch (error) {
+      console.error('Error deleting task', error);
+    }
+  };
+
+  const value = {
+    tasks,
+    filter,
+    setFilter,
+    addTask,
+    updateTask,
+    deleteTask,
+  };
+
   return (
-    <TaskProvider>
+    <TaskContext.Provider value={value}>
       <div className="max-w-4xl mx-auto p-6 space-y-6">
         <header className="text-center">
           <h1 className="text-3xl font-bold">Task Manager</h1>
@@ -191,7 +185,7 @@ const App = () => {
           <TaskList />
         </main>
       </div>
-    </TaskProvider>
+    </TaskContext.Provider>
   );
 };
 
