@@ -1,28 +1,16 @@
 const express = require('express');
 const cors = require('cors');
-const mongoose = require('mongoose');
 const { body, param, query, validationResult } = require('express-validator');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const db = require('./db');
+
+const SERVER_PORT = process.env.PORT || 3000;
 
 // Web Server
 const app = express();
 app.use(express.json());
 app.use(cors());
-
-// DB
-mongoose.connect('mongodb://localhost:27017/db').then(() => console.log('Connected to DB')).catch(err => console.error(err));
-
-// Task Model
-const taskSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    description: { type: String, default: '' },
-    completed: { type: Boolean, default: false },
-    createdAt: { type: Date, default: Date.now }
-});
-
-const Task = mongoose.model('Task', taskSchema);
-
 
 // Swagger
 const swaggerDocs = swaggerJsDoc({
@@ -78,7 +66,7 @@ app.post('/api/tasks',
 
         try {
             const { title, description } = req.body;
-            const task = new Task({ title, description });
+            const task = new db.Task({ title, description });
             await task.save();
             res.status(201).json(task);
         } catch (error) {
@@ -107,7 +95,7 @@ app.get('/api/tasks', async (req, res) => {
     try {
         const { completed } = req.query;
         const filter = completed !== undefined ? { completed: completed === 'true' } : {};
-        const tasks = await Task.find(filter);
+        const tasks = await db.Task.find(filter);
         res.status(200).json(tasks);
     } catch (error) {
         res.status(500).json({ error: 'Error occurred while getting tasks' });
@@ -140,7 +128,7 @@ app.get('/api/tasks/:id',
         }
 
         try {
-            const task = await Task.findById(req.params.id);
+            const task = await db.Task.findById(req.params.id);
             if (!task) {
                 return res.status(404).json({ error: 'Task not found' });
             }
@@ -190,7 +178,7 @@ app.put('/api/tasks/:id',
 
         try {
             const updates = req.body;
-            const task = await Task.findByIdAndUpdate(req.params.id, updates, { new: true });
+            const task = await db.Task.findByIdAndUpdate(req.params.id, updates, { new: true });
             if (!task) {
                 return res.status(404).json({ error: 'Task not found' });
             }
@@ -226,7 +214,7 @@ app.delete('/api/tasks/:id',
         }
 
         try {
-            const task = await Task.findByIdAndDelete(req.params.id);
+            const task = await db.Task.findByIdAndDelete(req.params.id);
             if (!task) {
                 return res.status(404).json({ error: 'Task not found' });
             }
@@ -237,6 +225,5 @@ app.delete('/api/tasks/:id',
     });
 
 // Start Server
-const PORT = 3000;
-app.listen(PORT, () => console.log(`Running on http://localhost:${PORT}`));
+app.listen(SERVER_PORT, () => console.log(`Running on http://localhost:${PORT}`));
 
