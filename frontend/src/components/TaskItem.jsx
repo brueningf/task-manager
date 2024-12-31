@@ -81,7 +81,7 @@ const TaskItem = ({ task }) => {
           </button>
 
           <div>
-            <h3 className="font-bold text-lg text-gray-800 mb-1">{task.title}</h3>
+            <h3 className={`font-bold text-lg text-gray-800 mb-1 ${task.completed ? 'line-through' : '' }`}>{task.title}</h3>
             {task.description && <p className="text-sm text-gray-500 mb-2">{task.description}</p>}
             <span className="text-xs text-gray-400">{moment(task.createdAt).format('MMM D, YYYY')}</span>
           </div>
@@ -91,32 +91,16 @@ const TaskItem = ({ task }) => {
       <div className="flex items-center gap-2">
         <button
           onClick={() => setIsEditing(!isEditing)}
-          className="flex items-center justify-center text-white bg-blue-500 hover:bg-blue-600 w-6 h-6 rounded-full transition-all duration-200 shadow-md hover:shadow-lg"
+          className="flex items-center justify-center text-white bg-blue-500 hover:bg-blue-600 w-6 h-6 rounded-full transition-all duration-200 shadow-md hover:shadow-lg p-1"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2}
-            stroke="currentColor"
-            className="w-4 h-4"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M16.862 2.487a2.25 2.25 0 00-3.187-.122L6.256 9.285a4.5 4.5 0 00-1.112 1.592l-1.516 3.569a.75.75 0 00.927.927l3.569-1.516a4.5 4.5 0 001.592-1.112l7.419-7.419a2.25 2.25 0 00-.122-3.187z"
-            />
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M19.5 12.75h-2.25m-6 6H7.5m3.75-12v2.25M6.75 6.75l1.5 1.5M12 16.5l1.5 1.5m2.25-4.5H15m-7.5-7.5l3 3m6-6l3 3"
-            />
-          </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+            </svg>
         </button>
 
         <button
           onClick={() => deleteTask(task._id)}
-          className="flex items-center justify-center text-white bg-red-500 hover:bg-red-600 w-6 h-6 rounded-full transition-all duration-200 shadow-md hover:shadow-lg"
+          className="flex items-center justify-center text-white bg-red-500 hover:bg-red-600 w-6 h-6 rounded-full transition-all duration-200 shadow-md hover:shadow-lg p-1"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
