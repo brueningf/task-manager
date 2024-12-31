@@ -5,6 +5,7 @@ const TaskForm = () => {
   const { addTask } = useContext(TaskContext);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [showDescription, setShowDescription] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,33 +15,49 @@ const TaskForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 bg-gray-50 p-4 rounded shadow">
-      <div>
-        <label className="block text-sm font-bold mb-1">Title</label>
+    <form
+      onSubmit={handleSubmit}
+      className="flex items-center justify-between bg-white p-4 rounded shadow-md transition-transform transform hover:scale-105"
+    >
+      {/* Title Field */}
+      <div className="flex-grow">
         <input
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full border p-2 rounded"
+          placeholder="Task title"
+          className="w-full border border-gray-300 p-2 rounded text-sm mb-2 focus:outline-none focus:ring focus:ring-blue-300"
           required
         />
+
+        {/* Toggle and Description Field */}
+        {showDescription ? (
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Task description (optional)"
+            className="w-full border border-gray-300 p-2 rounded text-sm mb-2 focus:outline-none focus:ring focus:ring-blue-300"
+          />
+        ) : (
+          <button
+            type="button"
+            onClick={() => setShowDescription(true)}
+            className="text-sm text-blue-500 hover:underline"
+          >
+            Add a description
+          </button>
+        )}
       </div>
-      <div>
-        <label className="block text-sm font-bold mb-1">Description</label>
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          className="w-full border p-2 rounded"
-        />
-      </div>
+
+      {/* Submit Button */}
       <button
         type="submit"
-        className="w-full text-white bg-green-500 px-4 py-2 rounded"
+        className="ml-4 px-4 py-2 text-sm text-white rounded bg-gradient-to-r from-green-400 to-green-600 shadow-md hover:from-green-500 hover:to-green-700"
       >
-        Add Task
+        Add
       </button>
     </form>
   );
 };
 
-export default TaskForm; 
+export default TaskForm;

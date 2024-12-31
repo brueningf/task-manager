@@ -6,6 +6,7 @@ import TaskForm from './components/TaskForm';
 import TaskContext from './context/TaskContext';
 
 const App = () => {
+  // todo: move context provider to context file
   const [tasks, setTasks] = useState([]);
   const [filter, setFilter] = useState('all');
 
@@ -61,36 +62,48 @@ const App = () => {
   return (
     <TaskContext.Provider value={value}>
       <div className="max-w-4xl mx-auto p-6 space-y-6">
-        <header className="text-center">
-          <h1 className="text-3xl font-bold">Task Manager</h1>
-        </header>
+          <header className="text-center">
+            <h1 className="text-4xl font-bold text-gray-800 flex items-center justify-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="w-8 h-8 text-green-500"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4.5 12.75l6 6 9-13.5"
+                />
+              </svg>
+              Task Manager
+            </h1>
+            <p className="text-gray-500 text-sm mt-2">Organize your tasks efficiently</p>
+          </header>
 
-        <nav className="flex gap-4 justify-center">
-          <button
-            onClick={() => setFilter('all')}
-            className="px-4 py-2 text-sm font-bold bg-gray-200 rounded"
-          >
-            All
-          </button>
-          <button
-            onClick={() => setFilter('completed')}
-            className="px-4 py-2 text-sm font-bold bg-gray-200 rounded"
-          >
-            Completed
-          </button>
-          <button
-            onClick={() => setFilter('pending')}
-            className="px-4 py-2 text-sm font-bold bg-gray-200 rounded"
-          >
-            Pending
-          </button>
-        </nav>
+          <nav className="flex gap-4 justify-center">
+            {['all', 'completed', 'pending'].map((status) => (
+              <button
+                key={status}
+                onClick={() => setFilter(status)}
+                className={`px-4 py-2 text-sm font-bold rounded shadow-md transition-all duration-200
+                  ${filter === status ? 
+                    'bg-gradient-to-r from-green-400 to-green-600 text-white' : 
+                    'bg-gray-200 text-gray-700 hover:bg-gray-300'}
+                `}
+              >
+                {status.charAt(0).toUpperCase() + status.slice(1)}
+              </button>
+            ))}
+          </nav>
 
-        <main className="space-y-6">
-          <TaskForm />
-          <TaskList />
-        </main>
-      </div>
+          <main className="space-y-6">
+            <TaskList filter={filter} />
+            <TaskForm />
+          </main>
+        </div>
     </TaskContext.Provider>
   );
 };
