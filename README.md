@@ -1,5 +1,9 @@
 # Task Manager - Full Stack Application
 
+## Deployment
+- **Frontend**: [Task-Manager](https://task-manager10.netlify.app/).
+- **API Docs**: [Docs](https://task-manager-nmxz.onrender.com/api-docs/) 
+
 ## Description
 The "Task Manager" application allows users to manage their tasks through an intuitive interface. Users can create, read, update, and delete tasks, and mark tasks as completed or pending.
 The frontend is built with React, and the backend uses Node.js, MongoDB, and Express.
@@ -19,12 +23,8 @@ The frontend is built with React, and the backend uses Node.js, MongoDB, and Exp
 - **Filtering**: Tasks can be viewed filtered by completed, pending, or all.
 - **Responsive Design**: Optimized for both mobile and desktop devices.
 
-### Deployment
-- **Frontend**: [Task-Manager](https://task-manager10.netlify.app/).
-- **API Docs**: [Docs](https://task-manager-nmxz.onrender.com/api-docs/) 
-
 ## Pending Features
-- **JWT Authentication** to protect the backend endpoints (optional).
+- **JWT Authentication** to protect the backend endpoints
 - **Unit Tests** for the backend using **Jest** and for the frontend using **React Testing Library**.
 - **Animations** to enhance the user experience.
 
