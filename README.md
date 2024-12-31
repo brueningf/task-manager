@@ -1,4 +1,4 @@
-# Task Manager - Full Stack Application
+# Task Manager
 
 ## Deployment
 - **Frontend**: [Task-Manager](https://task-manager10.netlify.app/).
